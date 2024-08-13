@@ -9,12 +9,13 @@ const SearchChannelsInput = ({ user }) => {
     const fetchChannels = async (query) => {
         if (!query) return;
         setIsLoading(true);
-        console.log('user', user)
-        if (!user?.access_token) return;
+
+        if (!user?.provider_token) return;
         try {
             const response = await fetch(`https://api.twitch.tv/helix/search/channels?query=${query}`, {
+                method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${user.access_token}`, // Replace with your Twitch API token
+                    'Authorization': `Bearer ${user.provider_token}`, // Replace with your Twitch API token
                     'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`, // Replace with your Twitch Client ID
                 }
             });
@@ -49,7 +50,7 @@ const SearchChannelsInput = ({ user }) => {
 
             {isLoading && <p className="text-center mt-2 text-slate-500 dark:text-white">Loading...</p>}
 
-            {channels.length > 0 && (
+            {channels?.length && channels.length > 0 && (
                 <ul className="absolute top-12 left-0 w-full bg-white dark:bg-slate-950 border border-slate-950 dark:border-white rounded shadow-lg z-10">
                     {channels.map((channel) => (
                         <li key={channel.id} className="px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">

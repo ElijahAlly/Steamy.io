@@ -93,17 +93,17 @@ export default function Layout(props) {
             <div className='flex flex-col mt-0 md:mt-6'>
               <Image
                 className="rounded-full border border-slate-500 p-1 mb-2"
-                src={user?.user_metadata?.avatar_url 
-                  || user?.user_metadata?.picture 
+                src={user?.user?.user_metadata?.avatar_url 
+                  || user?.user?.user_metadata?.picture 
                   || '/public/images/user-icon-96-white.png'
                   || '/images/user-icon-96-white.png'
                 }
                 width="36"
                 height="36"
-                alt={user?.username + ' profile picture'}
+                alt={user?.user?.username + ' profile picture'}
                 priority
               />
-              <h6 className="text-xs text-slate-950 dark:text-white">{user?.username || 'UserName'}</h6>
+              <h6 className="text-xs text-slate-950 dark:text-white">{user?.user?.username || 'Username'}</h6>
             </div>
             {/* Small screen Channels list */ }
             <div className='px-3'>
@@ -138,9 +138,9 @@ const SidebarItem = ({ channel, isActiveChannel, user }) => (
   <>
     <li className="flex items-center justify-between">
       <Link href="/channels/[id]" as={`/channels/${channel.id}`}>
-        <a className={isActiveChannel ? 'font-bold' : ''}>{channel.slug}</a>
+        <a className={`text-slate-950 dark:text-white ${isActiveChannel ? 'font-bold' : ''}`}>{channel.slug}</a>
       </Link>
-      {channel.id !== 1 && (channel.created_by === user?.id || user?.appRole === 'admin') && (
+      {channel.id !== 1 && (channel.created_by === user?.user?.id || user?.appRole === 'admin') && (
         <button onClick={() => deleteChannel(channel.id)}>
           <TrashIcon />
         </button>
