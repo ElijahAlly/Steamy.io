@@ -28,8 +28,8 @@ const ChannelsPage = (props) => {
       <div className="relative h-full z-30">
         <div className="h-fit pb-16">
           <div className="p-2 overflow-y-auto">
-            {messages.map((x) => (
-              <Message key={x.id} message={x} />
+            { messages.map((message) => (
+              <Message key={ message.id} message={message} />
             ))}
             <div ref={messagesEndRef} style={{ height: 0 }} />
           </div>
