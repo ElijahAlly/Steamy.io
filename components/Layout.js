@@ -95,6 +95,7 @@ export default function Layout(props) {
                 className="rounded-full border border-slate-500 p-1 mb-2"
                 src={user?.user_metadata?.avatar_url 
                   || user?.user_metadata?.picture 
+                  || '/public/images/user-icon-96-white.png'
                   || '/images/user-icon-96-white.png'
                 }
                 width="36"

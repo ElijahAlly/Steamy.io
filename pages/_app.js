@@ -17,8 +17,8 @@ export default function SupabaseSession({ Component, pageProps }) {
       // /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
       session
     ) {
-      setSession(session)
-      const currentUser = session?.user
+      setSession(session);
+      const currentUser = session;
       if (session) {
         const jwt = jwtDecode(session.access_token)
         currentUser.appRole = jwt.user_role
