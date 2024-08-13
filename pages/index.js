@@ -6,24 +6,24 @@ import { ThemeSupa } from '@supabase/auth-ui-shared';
 import Image from 'next/image';
 
 const Home = () => {
-  const router = useRouter();
-  const [session, setSession] = useState(null);
+  // const router = useRouter();
+  // const [session, setSession] = useState(null);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    })
+  // useEffect(() => {
+  //   supabase.auth.getSession().then(({ data: { session } }) => {
+  //     setSession(session);
+  //   })
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    })
+  //   const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+  //     setSession(session);
+  //   })
 
-    return () => subscription.unsubscribe();
-  }, [])
+  //   return () => subscription.unsubscribe();
+  // }, [])
 
-  useEffect(() => {
-    if (session) router.push('/channels');
-  }, [setSession])
+  // useEffect(() => {
+  //   if (session) router.push('/channels');
+  // }, [setSession])
 
   return (
     <div className="w-full h-fit flex justify-center items-center p-4">
