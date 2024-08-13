@@ -1,29 +1,21 @@
-import { useEffect, useState } from 'react'
 import { supabase } from 'lib/Store'
-import { useRouter } from 'next/router';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { useContext } from 'react';
+import UserContext from 'lib/UserContext';
+import { useRouter } from 'next/router';
 
 const Home = () => {
-  // const router = useRouter();
-  // const [session, setSession] = useState(null);
+  const router = useRouter();
+  const { user, userLoaded } = useContext(UserContext);
 
-  // useEffect(() => {
-  //   supabase.auth.getSession().then(({ data: { session } }) => {
-  //     setSession(session);
-  //   })
-
-  //   const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-  //     setSession(session);
-  //   })
-
-  //   return () => subscription.unsubscribe();
-  // }, [])
-
-  // useEffect(() => {
-  //   if (session) router.push('/channels');
-  // }, [setSession])
+  useEffect(() => {
+    if (userLoaded && user) {
+      router.push('/channels/1');
+    }
+  }, [user, userLoaded, router]);
 
   return (
     <div className="w-full h-fit flex justify-center items-center p-4">

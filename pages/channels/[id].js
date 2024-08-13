@@ -25,7 +25,7 @@ const ChannelsPage = (props) => {
   // Render the channels and messages
   return (
     <Layout channels={channels} activeChannelId={channelId}>
-      <div className="relative h-full">
+      <div className="relative h-full z-30">
         <div className="h-fit pb-16">
           <div className="p-2 overflow-y-auto">
             {messages.map((x) => (
@@ -35,7 +35,7 @@ const ChannelsPage = (props) => {
           </div>
         </div>
         <div className="p-2 absolute bottom-0 left-0 w-full">
-          <MessageInput onSubmit={async (text) => addMessage(text, channelId, user.id)} />
+          <MessageInput onSubmit={async (text) => addMessage(text, channelId, user?.id)} />
         </div>
       </div>
     </Layout>
