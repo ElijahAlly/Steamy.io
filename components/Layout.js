@@ -63,7 +63,7 @@ export default function Layout(props) {
             <SidebarItem
               channel={ channel }
               key={ channel.id }
-              isActiveChannel={ x.id === props.activeChannelId }
+              isActiveChannel={ channel.id === props.activeChannelId }
               user={ user }
             />
           )) }
