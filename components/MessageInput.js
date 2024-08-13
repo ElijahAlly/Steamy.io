@@ -1,27 +1,61 @@
-import { useState } from 'react'
+import { PaperPlaneIcon } from '@radix-ui/react-icons'
+import { useEffect, useRef, useState } from 'react'
 
 const MessageInput = ({ onSubmit }) => {
   const [messageText, setMessageText] = useState('')
+  const [isValidMessage, setIsValidMessage] = useState(false);
+  const textareaRef = useRef(null);
+
+  const handleInputChange = (e) => {
+    const lines = e.target.value.split('\n').length;
+
+    if (lines <= 3 || e.nativeEvent.inputType === "deleteContentBackward") {
+      setMessageText(e.target.value);
+    }
+  };
+
+  const checkIsValidMessage = () => {
+    setIsValidMessage(messageText.length > 0 
+      && !messageText.split(' ').every(char => char === ' ' || char === '\n' || char === '\n\n')
+    );
+  }
 
   const submitOnEnter = (event) => {
-    // Watch for enter key
-    if (event.keyCode === 13) {
-      onSubmit(messageText)
-      setMessageText('')
+    // Check for Shift + Enter to add a new line
+    if (event.key === 'Enter' && event.shiftKey) {
+      return; // Allow the default behavior for Shift + Enter (new line)
+    }
+    
+    // Watch for Enter key without Shift
+    if (event.key === 'Enter' && !event.shiftKey && isValidMessage) {
+      event.preventDefault(); // Prevent the default Enter behavior (new line)
+      onSubmit(messageText);
+      setMessageText('');
     }
   }
 
+  useEffect(() => {
+    checkIsValidMessage();
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // Reset height
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set height to scrollHeight
+    }
+  }, [messageText]);
+
   return (
-    <>
-      <input
-        className={`shadow-sm appearance-none border border-slate-950 dark:border-white rounded w-full py-2 px-3 dark:text-white dark:bg-slate-950 text-slate-500 bg-white leading-tight focus-shadow-md focus:outline-none focus:shadow-outline`}
-        type="text"
-        placeholder="Send a chat"
+    <div className="relative">
+      <textarea
+        ref={textareaRef}
+        className={`h-fit select-none appearance-none border ${isValidMessage ? 'shadow-sm border-cyan-500 shadow-cyan-700 focus:shadow-cyan-700 focus:shadow-md' : 'shadow-sm shadow-slate-600 focus:shadow-slate-600 focus:shadow-md border-slate-500 dark:border-white'} rounded w-full py-2 pl-3 pr-8 dark:text-white dark:bg-slate-950 text-slate-950 bg-white leading-tight resize-none focus:outline-none`}
+        placeholder="Send a chat (Shift+Enter for new line)"
         value={messageText}
-        onChange={(e) => setMessageText(e.target.value)}
-        onKeyDown={(e) => submitOnEnter(e)}
+        onChange={handleInputChange}
+        onKeyDown={submitOnEnter}
+        maxLength={300}
+        rows={1}
       />
-    </>
+      <PaperPlaneIcon className={`absolute right-3 bottom-4 ${isValidMessage ? 'text-cyan-500' : 'text-slate-500 dark:text-white'} -rotate-45`} />
+    </div>
   )
 }
 

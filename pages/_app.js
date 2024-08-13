@@ -14,7 +14,7 @@ export default function SupabaseSession({ Component, pageProps }) {
 
   useEffect(() => {
     function saveSession(
-      /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
+      // /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
       session
     ) {
       setSession(session)
@@ -25,12 +25,17 @@ export default function SupabaseSession({ Component, pageProps }) {
       }
       setUser(currentUser ?? null)
       setUserLoaded(!!currentUser)
-      if (currentUser) {
+      if (currentUser && router.pathname === '/') {
         router.push('/channels/[id]', '/channels/1')
       }
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => saveSession(session))
+    const initializeSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      saveSession(session);
+    };
+
+    initializeSession();
 
     const { subscription: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -40,9 +45,11 @@ export default function SupabaseSession({ Component, pageProps }) {
     )
 
     return () => {
-      authListener.unsubscribe()
-    }
-  }, [])
+      if (authListener && typeof authListener.unsubscribe === 'function') {
+        authListener.unsubscribe();
+      }
+    };
+  }, [router])
 
   const signOut = async () => {
     const { error } = await supabase.auth.signOut()

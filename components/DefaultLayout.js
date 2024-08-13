@@ -11,7 +11,7 @@ const DefaultLayout = ({ children }) => {
 
     return (
         <div className='flex flex-col h-screen w-screen overflow-hidden bg-white dark:bg-slate-950'>
-            <nav className='h-fit flex items-center justify-between sticky top-0 left-0 border-b border-slate-950 dark:border-white py-2 px-9'>
+            <nav className='h-fit flex items-center justify-between sticky top-0 left-0 border-b border-slate-950 dark:border-white py-2 px-3 md:px-9'>
                 <Image
                     className="rounded"
                     src='/images/Steamy-Dark-Logo-260px.png'
