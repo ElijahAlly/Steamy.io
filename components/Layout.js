@@ -57,7 +57,7 @@ export default function Layout(props) {
           }
         `}
       >
-        <SearchChannelsInput />
+        <SearchChannelsInput user={user} />
         <ul>
           { props.channels.map((channel) => (
             <SidebarItem

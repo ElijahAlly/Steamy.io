@@ -1,9 +1,7 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useContext, useState } from "react";
-import UserContext from "~/lib/UserContext";
+import { useState } from "react";
 
-const SearchChannelsInput = () => {
-    const { user } = useContext(UserContext);
+const SearchChannelsInput = ({ user }) => {
     const [addChannelText, setAddChannelText] = useState('');
     const [channels, setChannels] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -11,7 +9,8 @@ const SearchChannelsInput = () => {
     const fetchChannels = async (query) => {
         if (!query) return;
         setIsLoading(true);
-        
+        console.log('user', user)
+        if (!user?.access_token) return;
         try {
             const response = await fetch(`https://api.twitch.tv/helix/search/channels?query=${query}`, {
                 headers: {
