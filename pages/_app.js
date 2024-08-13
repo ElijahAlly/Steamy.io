@@ -4,11 +4,12 @@ import { useRouter } from 'next/router'
 import UserContext from 'lib/UserContext'
 import { supabase } from 'lib/Store'
 import { jwtDecode } from 'jwt-decode'
+import DefaultLayout from '~/components/DefaultLayout'
 
-export default function SupabaseSlackClone({ Component, pageProps }) {
+export default function SupabaseSession({ Component, pageProps }) {
   const [userLoaded, setUserLoaded] = useState(false)
   const [user, setUser] = useState(null)
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState(null);
   const router = useRouter()
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function SupabaseSlackClone({ Component, pageProps }) {
 
     const { subscription: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log(session)
+        // console.log('session', session)
         saveSession(session)
       }
     )
@@ -46,7 +47,7 @@ export default function SupabaseSlackClone({ Component, pageProps }) {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (!error) {
-      router.push('/')
+      router.push('/');
     }
   }
 
@@ -58,7 +59,9 @@ export default function SupabaseSlackClone({ Component, pageProps }) {
         signOut,
       }}
     >
-      <Component {...pageProps} />
+      <DefaultLayout>
+        <Component {...pageProps} />
+      </DefaultLayout>
     </UserContext.Provider>
   )
 }
