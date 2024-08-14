@@ -1,7 +1,12 @@
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import UserContext from "~/lib/UserContext";
 
 export default function DonationSuccess() {
+    const { user } = useContext(UserContext);
     const router = useRouter();
+
+    const getUserEmail = () => user?.user?.email ? '?prefilled_email=' + encodeURI(user.user.email) : '';
 
     return (
         <div className='fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-white dark:bg-slate-950 opacity-75'>
@@ -14,7 +19,7 @@ export default function DonationSuccess() {
                         className='w-fit p-2 mr-6 border border-slate-500 dark:border-white rounded-md text-slate-950 dark:text-white hover:text-slate-700 hover:border-slate-700 hover:dark:text-slate-300 hover:dark:border-slate-300'
                     >Go Back to Steamy</button>
                     <a 
-                        href={ 'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL } 
+                        href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUserEmail()} 
                         className='w-fit mt-6 bg-cyan-500 text-white rounded-md p-2 block hover:bg-cyan-400' 
                         target='_blank'
                     >Donate Again? 😜</a>       
