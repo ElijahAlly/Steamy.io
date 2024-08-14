@@ -8,6 +8,7 @@ import DefaultLayout from '~/components/DefaultLayout'
 
 export default function SupabaseSession({ Component, pageProps }) {
   const [userLoaded, setUserLoaded] = useState(false)
+  const [justLoggedOut, setJustLoggedOut] = useState(false);
   const [user, setUser] = useState(null)
   const [session, setSession] = useState(null);
   const router = useRouter()
@@ -17,6 +18,7 @@ export default function SupabaseSession({ Component, pageProps }) {
       // /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
       session
     ) {
+      if (justLoggedOut) return;
       setSession(session);
       const currentUser = session;
       if (session) {
@@ -133,9 +135,11 @@ export default function SupabaseSession({ Component, pageProps }) {
   const signOut = async () => {
     setUser(null); // Reset user state
     setSession(null); // Reset session state
+    setJustLoggedOut(true);
     const { error } = await supabase.auth.signOut();
     if (!error) {
       router.push('/'); // Redirect to login page
+      setTimeout(() => setJustLoggedOut(false), 600);
     } else {
       console.error('Error during sign-out:', error.message);
     }
