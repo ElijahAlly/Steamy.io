@@ -32,7 +32,7 @@ const SearchChannelsInput = ({ user }) => {
             const response = await fetch(`https://api.twitch.tv/helix/search/channels?query=${encodeURI(query)}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`, // Replace with your Twitch API token
+                    'Authorization': `Bearer ${user?.provider_token}`, // Replace with your Twitch API token
                     'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`, // Replace with your Twitch Client ID
                 }
             });
