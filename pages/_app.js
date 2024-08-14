@@ -136,7 +136,7 @@ export default function SupabaseSession({ Component, pageProps }) {
 
     const { error } = await supabase.auth.signOut();
     if (!error) {
-      router.push('/'); // Redirect to login page
+      // router.push('/'); // Redirect to login page
     } else {
       console.error('Error during sign-out:', error.message);
     }
