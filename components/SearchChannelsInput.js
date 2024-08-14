@@ -26,8 +26,8 @@ const SearchChannelsInput = ({ user }) => {
             //     scopes: ['user:read:email']
             //     user_id: "1061626664"
             // }
-            // const valRes = await res.json();
-            // console.log('val Res', valRes);
+            const valRes = await res.json();
+            console.log('val Res', valRes);
 
             const response = await fetch(`https://api.twitch.tv/helix/search/channels?query=${encodeURI(query)}`, {
                 method: 'GET',

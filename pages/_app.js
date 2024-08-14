@@ -21,8 +21,10 @@ export default function SupabaseSession({ Component, pageProps }) {
       const currentUser = session;
       if (session) {
         const jwt = jwtDecode(session.access_token)
+        console.log('jwt', jwt);
         currentUser.appRole = jwt.user_role
       }
+      console.log('user', currentUser);
       setUser(currentUser ?? null)
       setUserLoaded(!!currentUser)
       if (currentUser && router.pathname === '/') {
@@ -30,16 +32,57 @@ export default function SupabaseSession({ Component, pageProps }) {
       }
     }
 
+    const userScopes = [
+      'user:read:follows',
+      'user:write:chat',
+      'user:read:blocked_users',
+      'user:manage:blocked_users',
+      'user:read:chat',
+      'user:manage:chat_color',
+      'user:read:emotes',
+      'user:read:moderated_channels',
+      'user:read:subscriptions',
+      'user:manage:whispers',
+    ];
+
+    const channelScopes = [
+      'channel:manage:polls',
+      'channel:read:vips',
+    ];
+
+    const moderatorsScopes = [
+      'moderation:read',
+      'moderator:manage:chat_messages',
+    ];
+
+    const scopes = userScopes.join(' ') 
+      + ' ' + channelScopes.join(' ') 
+      + ' ' + moderatorsScopes.join(' ');
+
     const initializeSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      saveSession(session);
+      if (!session) {
+        // No session exists, trigger sign in with scopes
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'twitch',
+          options: {
+            scopes,
+          },
+        });
+
+        if (error) {
+          console.error('Error during sign-in:', error.message);
+        }
+      } else {
+        saveSession(session);
+      }
     };
 
     initializeSession();
 
     const { subscription: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        // console.log('session', session)
+        console.log('session', session)
         saveSession(session)
       }
     )
