@@ -16,7 +16,7 @@ const SearchChannelsInput = ({ user }) => {
             const res = await fetch('https://id.twitch.tv/oauth2/validate', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${user.provider_token}`
+                    'Authorization': `Bearer ${user?.provider_token}`
                 }
             });
             // {
@@ -29,11 +29,12 @@ const SearchChannelsInput = ({ user }) => {
             const valRes = await res.json();
             console.log('val Res', valRes);
 
+            console.log('provider_token: ', user?.provider_token)
             const response = await fetch(`https://api.twitch.tv/helix/search/channels?query=${encodeURI(query)}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${user?.provider_token}`, // Replace with your Twitch API token
-                    'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`, // Replace with your Twitch Client ID
+                    'Authorization': `Bearer ${user?.provider_token}`,
+                    'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
                 }
             });
             const data = await response.json();
