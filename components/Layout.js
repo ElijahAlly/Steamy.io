@@ -93,7 +93,7 @@ export default function Layout(props) {
             </button>
             <div className='flex flex-col mt-0 md:mt-6'>
               <Image
-                className="rounded-full border border-slate-500 p-1 mb-2"
+                className="rounded-full border mb-2"
                 src={getUsersProfilePicture()}
                 width="36"
                 height="36"
