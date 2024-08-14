@@ -8,7 +8,6 @@ import DefaultLayout from '~/components/DefaultLayout'
 
 export default function SupabaseSession({ Component, pageProps }) {
   const [userLoaded, setUserLoaded] = useState(false)
-  const [justLoggedOut, setJustLoggedOut] = useState(false);
   const [user, setUser] = useState(null)
   const [session, setSession] = useState(null);
   const router = useRouter()
@@ -18,25 +17,22 @@ export default function SupabaseSession({ Component, pageProps }) {
       // /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
       session
     ) {
-      if (justLoggedOut) return;
       setSession(session);
       const currentUser = session;
       if (session) {
         const jwt = jwtDecode(session.access_token)
         console.log('jwt', jwt);
         currentUser.appRole = jwt.user_role
-      }
-      console.log('user', currentUser);
-      setUser(currentUser ?? null)
-      setUserLoaded(!!currentUser)
-      // Redirect to channels if logged in and on the root page
-      if (currentUser && router.pathname === '/') {
-        router.push('/channels/[id]', '/channels/1');
-      }
+        setUser(currentUser);
+        setUserLoaded(true);
 
-      // if (!currentUser && router.pathname !== '/') {
-      //   router.push('/');
-      // }
+        if (currentUser && router.pathname === '/') {
+          router.push('/channels/[id]', '/channels/1');
+        }
+      } else {
+        setUser(null);
+        setUserLoaded(false);
+      }
     }
 
     const userScopes = [
@@ -92,6 +88,7 @@ export default function SupabaseSession({ Component, pageProps }) {
         if (event === 'SIGNED_OUT') {
           setUser(null);
           setSession(null);
+          setUserLoaded(false);
           router.push('/');
         } else {
           saveSession(session);
@@ -133,13 +130,13 @@ export default function SupabaseSession({ Component, pageProps }) {
   }
 
   const signOut = async () => {
-    setUser(null); // Reset user state
-    setSession(null); // Reset session state
-    setJustLoggedOut(true);
+    setUser(null);
+    setSession(null);
+    setUserLoaded(false);
+
     const { error } = await supabase.auth.signOut();
     if (!error) {
       router.push('/'); // Redirect to login page
-      setTimeout(() => setJustLoggedOut(false), 600);
     } else {
       console.error('Error during sign-out:', error.message);
     }
