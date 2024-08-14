@@ -95,15 +95,14 @@ export default function Layout(props) {
                 className="rounded-full border border-slate-500 p-1 mb-2"
                 src={user?.user?.user_metadata?.avatar_url 
                   || user?.user?.user_metadata?.picture 
-                  || '/public/images/user-icon-96-white.png'
                   || '/images/user-icon-96-white.png'
                 }
                 width="36"
                 height="36"
-                alt={user?.user?.username + ' profile picture'}
+                alt={user?.user?.full_name + ' profile picture'}
                 priority
               />
-              <h6 className="text-xs text-slate-950 dark:text-white">{user?.user?.username || 'Username'}</h6>
+              <h6 className="text-xs text-slate-950 dark:text-white">{user?.user?.full_name || 'Username'}</h6>
             </div>
             {/* Small screen Channels list */ }
             <div className='px-3'>
