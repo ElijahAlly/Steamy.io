@@ -4,10 +4,8 @@ import Image from "next/image";
 import UserContext from "~/lib/UserContext";
 
 const DefaultLayout = ({ children }) => {
-    const { user } = useContext(UserContext);
+    const { getUsersEmail } = useContext(UserContext);
 
-    const getUserEmail = () => user?.user?.email ? '?prefilled_email=' + encodeURI(user.user.email) : '';
-    
     useEffect(() => {
         if (!document.documentElement.classList.contains('dark')) document.documentElement.classList.add('dark');
     }, []);
@@ -23,8 +21,8 @@ const DefaultLayout = ({ children }) => {
                     alt='Steamy App Logo'
                     priority
                 />
-                <a href={ 'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUserEmail()} className='bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>donate any amount :)</a>
-                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUserEmail()} className='bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>donate :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUsersEmail()} className='bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>donate any amount :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUsersEmail()} className='bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>donate :)</a>
                 <ThemeToggler />
             </nav>
             <div className='h-full flex flex-col overflow-y-auto'>

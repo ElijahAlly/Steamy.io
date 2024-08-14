@@ -8,7 +8,7 @@ import UserContext from '~/lib/UserContext'
 
 const ChannelsPage = (props) => {
   const router = useRouter()
-  const { user, authLoaded, signOut } = useContext(UserContext)
+  const { getUsersId } = useContext(UserContext)
   const messagesEndRef = useRef(null)
 
   // Else load up the page
@@ -35,7 +35,7 @@ const ChannelsPage = (props) => {
           </div>
         </div>
         <div className="p-2 absolute bottom-0 left-0 w-full">
-          <MessageInput onSubmit={async (text) => addMessage(text, channelId, user?.id)} />
+          <MessageInput onSubmit={async (text) => addMessage(text, channelId, getUsersId())} />
         </div>
       </div>
     </Layout>
