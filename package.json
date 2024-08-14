@@ -1,4 +1,8 @@
 {
+  "author": {
+    "name": "elijah ally",
+    "url": "https://github.com/ElijahAlly/Steamy.io"
+  },
   "name": "steamy.io",
   "version": "0.2.0",
   "license": "MIT",

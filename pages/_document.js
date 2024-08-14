@@ -13,6 +13,7 @@ export default function MyDocument() {
                 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#020617" />
                 <meta name="msapplication-TileColor" content="#020617" />
                 <meta name="theme-color" content="#020617" />
+                <script async src="https://js.stripe.com/v3/buy-button.js"></script>
             </Head>
             <body>
                 <Main />

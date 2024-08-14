@@ -20,6 +20,15 @@ const DefaultLayout = ({ children }) => {
                     alt='Steamy App Logo'
                     priority
                 />
+                {/* <div className='hidden md:block'>
+                    <stripe-buy-button
+                        buy-button-id="buy_btn_1PnX2HAhW6C3kbAmN5Q3TVn3"
+                        publishable-key={process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
+                    >
+                    </stripe-buy-button>
+                </div> */}
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_APP_STRIPE_DONATION_URL} className='bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>Donate Any Amount :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_APP_STRIPE_DONATION_URL} className='bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>Donate :)</a>
                 <ThemeToggler />
             </nav>
             <div className='h-full flex flex-col overflow-y-auto'>

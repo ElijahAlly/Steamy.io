@@ -18,7 +18,7 @@ const Home = () => {
   }, [user, userLoaded, router]);
 
   return (
-    <div className="w-full h-fit flex justify-center items-center p-4">
+    <div className="w-full h-fit flex justify-center items-center p-4 mt-36 md:mt-56">
       <div className="w-full sm:w-1/2 xl:w-1/3">
         <div className="border-teal p-8 border-t-12 mb-6 rounded-lg shadow-lg dark:bg-slate-900">
           <Image 
