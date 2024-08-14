@@ -89,7 +89,7 @@ export default function Layout(props) {
               className="hidden md:block min-w-fit h-fit select-none bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded w-2/5 md:w-full transition duration-150"
               onClick={ () => signOut() }
             >
-              Log out
+              Logout
             </button>
             <div className='flex flex-col mt-0 md:mt-6'>
               <Image
