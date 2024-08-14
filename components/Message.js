@@ -4,12 +4,12 @@ import { deleteMessage } from '~/lib/Store'
 import TrashIcon from '~/components/TrashIcon'
 
 const Message = ({ message }) => {
-  const { user } = useContext(UserContext)
+  const { user, getUsersId } = useContext(UserContext)
 
   return (
     <div className="py-1 flex items-center space-x-2">
       <div className="text-gray-100 w-4">
-        {(user?.user?.id === message.user_id || ['admin', 'moderator'].includes(user?.appRole)) && (
+        {(getUsersId() === message.user_id || ['admin', 'moderator'].includes(user?.appRole)) && (
           <button onClick={() => deleteMessage(message.id)}>
             <TrashIcon />
           </button>

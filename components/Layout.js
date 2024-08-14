@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons'
 
 export default function Layout(props) {
-  const { signOut, user } = useContext(UserContext);
+  const { signOut, user, getUsersProfilePicture, getUsersUsername, getUsersId } = useContext(UserContext);
   const [isChannelListDropdownSelected, setIsChannelListDropdownSelected] = useState(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
@@ -93,16 +93,13 @@ export default function Layout(props) {
             <div className='flex flex-col mt-0 md:mt-6'>
               <Image
                 className="rounded-full border border-slate-500 p-1 mb-2"
-                src={user?.user?.user_metadata?.avatar_url 
-                  || user?.user?.user_metadata?.picture 
-                  || '/images/user-icon-96-white.png'
-                }
+                src={getUsersProfilePicture()}
                 width="36"
                 height="36"
-                alt={user?.user?.full_name + ' profile picture'}
+                alt={getUsersUsername() + ' profile picture'}
                 priority
               />
-              <h6 className="text-xs text-slate-950 dark:text-white">{user?.user?.full_name || 'Username'}</h6>
+              <h6 className="text-xs text-slate-950 dark:text-white">{getUsersUsername()}</h6>
             </div>
             {/* Small screen Channels list */ }
             <div className='px-3'>
@@ -139,7 +136,7 @@ const SidebarItem = ({ channel, isActiveChannel, user }) => (
       <Link href="/channels/[id]" as={`/channels/${channel.id}`}>
         <a className={`text-slate-950 dark:text-white ${isActiveChannel ? 'font-bold' : ''}`}>{channel.slug}</a>
       </Link>
-      {channel.id !== 1 && (channel.created_by === user?.user?.id || user?.appRole === 'admin') && (
+      {channel.id !== 1 && (channel.created_by === getUsersId() || user?.appRole === 'admin') && (
         <button onClick={() => deleteChannel(channel.id)}>
           <TrashIcon />
         </button>

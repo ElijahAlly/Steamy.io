@@ -51,6 +51,32 @@ export default function SupabaseSession({ Component, pageProps }) {
     };
   }, [router])
 
+  const getUsersId = () => {
+    if (user?.user?.id) return user?.user?.id;
+    if (user?.user?.identities[0]?.user_id) return user?.user?.identities[0]?.user_id;
+    return '';
+  }
+
+  const getUsersUsername = () => {
+    if (user?.user?.user_metadata?.full_name) return user?.user?.user_metadata?.full_name;
+    if (user?.user?.user_metadata?.name) return user?.user?.user_metadata?.name;
+    if (user?.user?.user_metadata?.nickname) return user?.user?.user_metadata?.nickname;
+    if (user?.user?.user_metadata?.slug) return user?.user?.user_metadata?.slug;
+    return 'Username';
+  }
+
+  const getUsersEmail = () => {
+    if (user?.user?.email) return user?.user?.email;
+    if (user?.user?.user_metadata?.email) return user?.user?.user_metadata?.email;
+    return 'email';
+  }
+
+  const getUsersProfilePicture = () => {
+    if (user?.user?.user_metadata?.avatar_url) return user?.user?.user_metadata?.avatar_url;
+    if (user?.user?.user_metadata?.picture) return user?.user?.user_metadata?.picture;
+    return '/images/user-icon-96-white.png';
+  }
+
   const signOut = async () => {
     const { error } = await supabase.auth.signOut()
     if (!error) {
@@ -64,6 +90,10 @@ export default function SupabaseSession({ Component, pageProps }) {
         userLoaded,
         user,
         signOut,
+        getUsersId,
+        getUsersUsername,
+        getUsersEmail,
+        getUsersProfilePicture,
       }}
     >
       <DefaultLayout>
