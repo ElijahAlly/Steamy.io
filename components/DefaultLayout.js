@@ -27,8 +27,8 @@ const DefaultLayout = ({ children }) => {
                     >
                     </stripe-buy-button>
                 </div> */}
-                <a href={'https://donate.stripe.com/' + process.env.NEXT_APP_STRIPE_DONATION_URL} className='bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>Donate Any Amount :)</a>
-                <a href={'https://donate.stripe.com/' + process.env.NEXT_APP_STRIPE_DONATION_URL} className='bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>Donate :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL} className='bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>Donate Any Amount :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL} className='bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>Donate :)</a>
                 <ThemeToggler />
             </nav>
             <div className='h-full flex flex-col overflow-y-auto'>
