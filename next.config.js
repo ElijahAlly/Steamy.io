@@ -1,6 +1,12 @@
 module.exports = {
     images: {
-        domains: ['static-cdn.jtvnw.net', '*.com'],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'static-cdn.jtvnw.net',
+                port: '',
+                pathname: '*/**',
+            },
+        ]
     },
-    domains: ['api.twitch.tv', '*.twitch.tv']
 }

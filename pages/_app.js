@@ -27,9 +27,14 @@ export default function SupabaseSession({ Component, pageProps }) {
       console.log('user', currentUser);
       setUser(currentUser ?? null)
       setUserLoaded(!!currentUser)
+      // Redirect to channels if logged in and on the root page
       if (currentUser && router.pathname === '/') {
-        router.push('/channels/[id]', '/channels/1')
+        router.push('/channels/[id]', '/channels/1');
       }
+
+      // if (!currentUser && router.pathname !== '/') {
+      //   router.push('/');
+      // }
     }
 
     const userScopes = [
@@ -82,8 +87,13 @@ export default function SupabaseSession({ Component, pageProps }) {
 
     const { subscription: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('session', session)
-        saveSession(session)
+        if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setSession(null);
+          router.push('/');
+        } else {
+          saveSession(session);
+        }
       }
     )
 
@@ -121,11 +131,15 @@ export default function SupabaseSession({ Component, pageProps }) {
   }
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut()
+    setUser(null); // Reset user state
+    setSession(null); // Reset session state
+    const { error } = await supabase.auth.signOut();
     if (!error) {
-      router.push('/');
+      router.push('/'); // Redirect to login page
+    } else {
+      console.error('Error during sign-out:', error.message);
     }
-  }
+  };
 
   return (
     <UserContext.Provider

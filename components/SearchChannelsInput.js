@@ -34,11 +34,104 @@ const SearchChannelsInput = ({ user }) => {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${user?.provider_token}`,
-                    'Client-Id': `98q4f2hye67zupp3808gi087k0oey9`,
+                    'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
                 }
             });
             const data = await response.json();
-            console.log('twitch channel data', data);
+            /*
+                [
+                    {
+                        "broadcaster_language": "en",
+                        "broadcaster_login": "mogulmoves",
+                        "display_name": "mogulmoves",
+                        "game_id": "509663",
+                        "game_name": "Special Events",
+                        "id": "40934651",
+                        "is_live": false,
+                        "tag_ids": [],
+                        "tags": [
+                            "English",
+                            "Speedrun",
+                            "Charity",
+                            "Marathon"
+                        ],
+                        "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/bde8aaf5-35d4-4503-9797-842401da900f-profile_image-300x300.png",
+                        "title": "FAST50🚀CHARITY SPEEDRUNNING EVENT🚀50 HOUR STREAM !DONATE !SCHEDULE",
+                        "started_at": ""
+                    },
+                    {
+                        "broadcaster_language": "en",
+                        "broadcaster_login": "moonmoon",
+                        "display_name": "MOONMOON",
+                        "game_id": "489170",
+                        "game_name": "DARK SOULS II: Scholar of the First Sin",
+                        "id": "121059319",
+                        "is_live": false,
+                        "tag_ids": [],
+                        "tags": [
+                            "English"
+                        ],
+                        "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/3973e918fe7cc8c8-profile_image-300x300.png",
+                        "title": "Next stream Thursday 3pm PDT GOONGOON eyebrowser ISH | !vods !archive !discord",
+                        "started_at": ""
+                    },
+                    {
+                        "broadcaster_language": "ru",
+                        "broadcaster_login": "morphe_ya",
+                        "display_name": "morphe_ya",
+                        "game_id": "509658",
+                        "game_name": "Just Chatting",
+                        "id": "194407709",
+                        "is_live": false,
+                        "tag_ids": [],
+                        "tags": [
+                            "Русский"
+                        ],
+                        "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/6a039e94-3fa6-400f-b7fa-7e01909c12d7-profile_image-300x300.png",
+                        "title": "hii | !tg !winline",
+                        "started_at": ""
+                    },
+                    {
+                        "broadcaster_language": "ja",
+                        "broadcaster_login": "mother3rd",
+                        "display_name": "MOTHER3rd",
+                        "game_id": "498566",
+                        "game_name": "Slots",
+                        "id": "55734416",
+                        "is_live": false,
+                        "tag_ids": [],
+                        "tags": [
+                            "日本語"
+                        ],
+                        "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/296ec4d2-ec6b-4ae9-aae5-33ed1941e368-profile_image-300x300.png",
+                        "title": "れんじろうノリ打ち シンフォギア空いてませんでした",
+                        "started_at": ""
+                    },
+                    {
+                        "broadcaster_language": "en",
+                        "broadcaster_login": "morgpie",
+                        "display_name": "Morgpie",
+                        "game_id": "509658",
+                        "game_name": "Just Chatting",
+                        "id": "591995115",
+                        "is_live": true,
+                        "tag_ids": [],
+                        "tags": [
+                            "English",
+                            "adhd",
+                            "furry",
+                            "fitness",
+                            "sigma",
+                            "sigmafemale",
+                            "grindset",
+                            "MuscleMommy",
+                            "btd6"
+                        ],
+                        "thumbnail_url": "https://static-cdn.jtvnw.net/jtv_user_pictures/5d774c75-911d-4b54-8a99-b2b5e5d6692b-profile_image-300x300.png",
+                        "title": "SUMMERWEEN🎃 !s !drink !merch",
+                        "started_at": "2024-08-14T17:53:39Z"
+                ]
+            */
             setChannels(data.data); // Assuming Twitch returns an array of channels under `data.data`
         } catch (error) {
             console.error('Error fetching Twitch channels:', error);
