@@ -65,6 +65,7 @@ export default function Layout(props) {
               key={ channel.id }
               isActiveChannel={ channel.id === props.activeChannelId }
               user={ user }
+              getUsersId={getUsersId}
             />
           )) }
           { !props.channels.length && (
@@ -130,7 +131,7 @@ export default function Layout(props) {
   )
 }
 
-const SidebarItem = ({ channel, isActiveChannel, user }) => (
+const SidebarItem = ({ channel, isActiveChannel, user, getUsersId }) => (
   <>
     <li className="flex items-center justify-between">
       <Link href="/channels/[id]" as={`/channels/${channel.id}`}>
