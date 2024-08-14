@@ -34,7 +34,7 @@ const SearchChannelsInput = ({ user }) => {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${user?.provider_token}`,
-                    'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
+                    'Client-Id': `98q4f2hye67zupp3808gi087k0oey9`,
                 }
             });
             const data = await response.json();
