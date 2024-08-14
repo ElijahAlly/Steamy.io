@@ -22,7 +22,7 @@ export default function SupabaseSession({ Component, pageProps }) {
       if (session) {
         const jwt = jwtDecode(session.access_token)
         console.log('jwt', jwt);
-        currentUser.appRole = jwt.role
+        currentUser.appRole = jwt.user_role
       }
       console.log('user', currentUser);
       setUser(currentUser ?? null)
