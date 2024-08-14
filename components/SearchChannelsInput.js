@@ -19,13 +19,20 @@ const SearchChannelsInput = ({ user }) => {
                     'Authorization': `Bearer ${user.provider_token}`
                 }
             });
-            const valRes = await res.json();
-            console.log('val Res', valRes);
+            // {
+            //     client_id: "98q4f2hye67zupp3808gi087k0oey9"
+            //     expires_in: 15250
+            //     login: "mansaelijahmusa"
+            //     scopes: ['user:read:email']
+            //     user_id: "1061626664"
+            // }
+            // const valRes = await res.json();
+            // console.log('val Res', valRes);
 
             const response = await fetch(`https://api.twitch.tv/helix/search/channels?query=${encodeURI(query)}`, {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${user.provider_token}`, // Replace with your Twitch API token
+                    'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`, // Replace with your Twitch API token
                     'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`, // Replace with your Twitch Client ID
                 }
             });
