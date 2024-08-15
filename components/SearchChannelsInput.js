@@ -56,6 +56,10 @@ const SearchChannelsInput = ({ user }) => {
         }
     };
 
+    const handleAddChannel = (channel) => {
+        
+    }
+
     return (
         <div className="relative flex flex-col my-0 md:my-1">
             <div className="relative">
@@ -78,7 +82,11 @@ const SearchChannelsInput = ({ user }) => {
                 <div className='w-full md:w-full h-96 overflow-hidden'>
                     <ul className="absolute top-12 left-0 w-full h-96 overflow-y-scroll bg-white dark:bg-slate-950 border border-slate-950 dark:border-white rounded shadow-lg z-10">
                         {channels.map((channel) => (
-                            <li key={channel?.id} className="flex px-2 py-4 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+                            <li 
+                                key={channel?.id} 
+                                className="flex px-2 py-4 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
+                                onClick={() => handleAddChannel(channel)}
+                            >
                                 <Image
                                     className="rounded-full border border-slate-500 p-1 mr-2"
                                     src={channel?.thumbnail_url

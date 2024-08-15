@@ -89,7 +89,6 @@ export default function SupabaseSession({ Component, pageProps }) {
           setUser(null);
           setSession(null);
           setUserLoaded(false);
-          router.push('/');
         } else {
           saveSession(session);
         }
@@ -134,10 +133,8 @@ export default function SupabaseSession({ Component, pageProps }) {
     setSession(null);
     setUserLoaded(false);
 
-    // const { error } = await supabase.auth.signOut();
-    if (!error) {
-      // router.push('/'); // Redirect to login page
-    } else {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
       console.error('Error during sign-out:', error.message);
     }
   };
