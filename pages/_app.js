@@ -105,7 +105,7 @@ export default function SupabaseSession({ Component, pageProps }) {
         authListener.unsubscribe();
       }
     };
-  }, [router, hasLoggedOut])
+  }, [router])
 
   const getUsersId = () => {
     if (user?.user?.id) return user?.user?.id;
