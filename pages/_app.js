@@ -10,6 +10,7 @@ export default function SupabaseSession({ Component, pageProps }) {
   const [userLoaded, setUserLoaded] = useState(false)
   const [user, setUser] = useState(null)
   const [session, setSession] = useState(null);
+  const [hasLoggedOut, setHasLoggedOut] = useState(false);
   const router = useRouter()
 
   useEffect(() => {
@@ -17,11 +18,12 @@ export default function SupabaseSession({ Component, pageProps }) {
       // /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
       session
     ) {
+      if (hasLoggedOut) return;
       setSession(session);
       const currentUser = session;
       if (session) {
         const jwt = jwtDecode(session.access_token)
-        console.log('jwt', jwt);
+        // console.log('jwt', jwt);
         currentUser.appRole = jwt.user_role
         setUser(currentUser);
         setUserLoaded(true);
@@ -63,6 +65,8 @@ export default function SupabaseSession({ Component, pageProps }) {
       + ' ' + moderatorsScopes.join(' ');
 
     const initializeSession = async () => {
+      if (hasLoggedOut) return;
+
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         // No session exists, trigger sign in with scopes
@@ -89,6 +93,7 @@ export default function SupabaseSession({ Component, pageProps }) {
           setUser(null);
           setSession(null);
           setUserLoaded(false);
+          setHasLoggedOut(true);
         } else {
           saveSession(session);
         }
@@ -100,7 +105,7 @@ export default function SupabaseSession({ Component, pageProps }) {
         authListener.unsubscribe();
       }
     };
-  }, [router])
+  }, [router, hasLoggedOut])
 
   const getUsersId = () => {
     if (user?.user?.id) return user?.user?.id;
@@ -132,10 +137,14 @@ export default function SupabaseSession({ Component, pageProps }) {
     setUser(null);
     setSession(null);
     setUserLoaded(false);
+    setHasLoggedOut(true);
 
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error('Error during sign-out:', error.message);
+    } else {
+      router.push('/'); // Navigate back to the homepage after successful sign-out
+      setTimeout(() => setHasLoggedOut(false), 1000);
     }
   };
 
