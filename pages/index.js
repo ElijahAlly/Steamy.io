@@ -12,6 +12,14 @@ const Home = () => {
   const { user, userLoaded } = useContext(UserContext);
 
   useEffect(() => {
+    window.addEventListener('load', () => {
+      // Check if the window was opened as a popup (or new tab)
+      if (window.opener && window.opener !== window) {
+        window.opener.postMessage('authSuccess', '*');
+        window.close();
+      }
+    });
+    
     if (userLoaded && user) {
       router.push('/channels/1');
     }
