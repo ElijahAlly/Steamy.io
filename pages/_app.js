@@ -114,6 +114,11 @@ export default function SupabaseSession({ Component, pageProps }) {
     return '';
   }
 
+  const getProviderId = () => {
+    if (user?.user?.user_metadata?.provider_id) return user?.user?.user_metadata?.provider_id;
+    return '';
+  }
+
   const getUsersUsername = () => {
     if (user?.user?.user_metadata?.full_name) return user?.user?.user_metadata?.full_name;
     if (user?.user?.user_metadata?.name) return user?.user?.user_metadata?.name;
@@ -156,6 +161,7 @@ export default function SupabaseSession({ Component, pageProps }) {
         user,
         signOut,
         getUsersId,
+        getProviderId,
         getUsersUsername,
         getUsersEmail,
         getUsersProfilePicture,
