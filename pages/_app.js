@@ -39,16 +39,16 @@ export default function SupabaseSession({ Component, pageProps }) {
     }
 
     const userScopes = [
-      'user:read:follows',
-      // 'user:write:chat',
-      // 'user:read:blocked_users',
-      // 'user:manage:blocked_users',
-      // 'user:read:chat',
-      // 'user:manage:chat_color',
-      // 'user:read:emotes',
-      // 'user:read:moderated_channels',
-      // 'user:read:subscriptions',
-      // 'user:manage:whispers',
+      // 'user:read:follows',
+      'user:write:chat',
+      'user:read:blocked_users',
+      'user:manage:blocked_users',
+      'user:read:chat',
+      'user:manage:chat_color',
+      'user:read:emotes',
+      'user:read:moderated_channels',
+      'user:read:subscriptions',
+      'user:manage:whispers',
     ];
 
     const channelScopes = [
@@ -65,7 +65,6 @@ export default function SupabaseSession({ Component, pageProps }) {
       + ' ' + channelScopes.join(' ') 
       + ' ' + moderatorsScopes.join(' ');
 
-    // console.log('scopes', scopes);
     const initializeSession = async () => {
       if (hasLoggedOut) return;
 
@@ -76,6 +75,7 @@ export default function SupabaseSession({ Component, pageProps }) {
           provider: 'twitch',
           options: {
             scopes,
+            queryParams: 'user:read:follows'
           },
         });
 
