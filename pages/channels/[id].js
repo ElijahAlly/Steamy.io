@@ -22,7 +22,6 @@ const ChannelsPage = (props) => {
     }
   }, [channels, channelId])
 
-  // Render the channels and messages
   return (
     <Layout channels={channels} activeChannelId={channelId}>
       <div className="relative h-full z-30">
