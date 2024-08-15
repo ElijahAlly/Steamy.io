@@ -20,6 +20,7 @@ export default function SupabaseSession({ Component, pageProps }) {
     ) {
       if (hasLoggedOut) return;
       setSession(session);
+      console.log('session', session)
       const currentUser = session;
       if (session) {
         const jwt = jwtDecode(session.access_token)
@@ -39,15 +40,15 @@ export default function SupabaseSession({ Component, pageProps }) {
 
     const userScopes = [
       'user:read:follows',
-      'user:write:chat',
-      'user:read:blocked_users',
-      'user:manage:blocked_users',
-      'user:read:chat',
-      'user:manage:chat_color',
-      'user:read:emotes',
-      'user:read:moderated_channels',
-      'user:read:subscriptions',
-      'user:manage:whispers',
+      // 'user:write:chat',
+      // 'user:read:blocked_users',
+      // 'user:manage:blocked_users',
+      // 'user:read:chat',
+      // 'user:manage:chat_color',
+      // 'user:read:emotes',
+      // 'user:read:moderated_channels',
+      // 'user:read:subscriptions',
+      // 'user:manage:whispers',
     ];
 
     const channelScopes = [
@@ -64,7 +65,7 @@ export default function SupabaseSession({ Component, pageProps }) {
       + ' ' + channelScopes.join(' ') 
       + ' ' + moderatorsScopes.join(' ');
 
-    console.log('scopes', scopes);
+    // console.log('scopes', scopes);
     const initializeSession = async () => {
       if (hasLoggedOut) return;
 
