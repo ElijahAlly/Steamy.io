@@ -74,7 +74,6 @@ export default function SupabaseSession({ Component, pageProps }) {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'twitch',
           options: {
-            redirectTo: 'https://steamyio.vercel.app/channels/1',
             scopes,
           },
         });
