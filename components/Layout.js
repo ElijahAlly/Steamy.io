@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons'
 
 export default function Layout(props) {
-  const { signOut, user, getUsersProfilePicture, getUsersUsername, getUsersId } = useContext(UserContext);
+  const { signOut, user, getUsersProfilePicture, getUsersUsername, getUsersId, getProviderId } = useContext(UserContext);
   const [followedChannels, setFollowedChannels] = useState([]);
   const [isChannelListDropdownSelected, setIsChannelListDropdownSelected] = useState(false);
   const dropdownRef = useRef(null);
@@ -47,7 +47,7 @@ export default function Layout(props) {
   }, []);
 
   const getChannelsFollowed = async () => {
-    const response = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${getUsersId()}`, {
+    const response = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${getProviderId()}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${user?.provider_token}`,
