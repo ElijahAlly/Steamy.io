@@ -39,7 +39,7 @@ export default function SupabaseSession({ Component, pageProps }) {
     }
 
     const userScopes = [
-      // 'user:read:follows',
+      'user:read:follows',
       'user:write:chat',
       'user:read:blocked_users',
       'user:manage:blocked_users',
@@ -74,8 +74,8 @@ export default function SupabaseSession({ Component, pageProps }) {
         const { error } = await supabase.auth.signInWithOAuth({
           provider: 'twitch',
           options: {
+            redirectTo: 'https://steamyio.vercel.app/channels/1',
             scopes,
-            queryParams: 'user:read:follows'
           },
         });
 
