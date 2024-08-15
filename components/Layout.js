@@ -9,6 +9,7 @@ import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons'
 
 export default function Layout(props) {
   const { signOut, user, getUsersProfilePicture, getUsersUsername, getUsersId } = useContext(UserContext);
+  const [followedChannels, setFollowedChannels] = useState([]);
   const [isChannelListDropdownSelected, setIsChannelListDropdownSelected] = useState(false);
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
@@ -44,6 +45,23 @@ export default function Layout(props) {
       window.removeEventListener('resize', () => {});
     };
   }, []);
+
+  const getChannelsFollowed = async () => {
+    const response = await fetch(`https://api.twitch.tv/helix/channels/followed?user_id=${getUsersId()}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${user?.provider_token}`,
+        'Client-Id': `${process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID}`,
+      }
+    });
+    const data = await response.json();
+    console.log('followed data', data);
+    // setFollowedChannels(data.data)
+  }
+
+  useEffect(() => {
+    getChannelsFollowed();
+  }, [])
 
   const getChannelsList = () => {
     return (
