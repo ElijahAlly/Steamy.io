@@ -23,7 +23,7 @@ export default function SupabaseSession({ Component, pageProps }) {
       const currentUser = session;
       if (session) {
         const jwt = jwtDecode(session.access_token)
-        // console.log('jwt', jwt);
+        console.log('jwt', jwt);
         currentUser.appRole = jwt.user_role
         setUser(currentUser);
         setUserLoaded(true);
@@ -64,6 +64,7 @@ export default function SupabaseSession({ Component, pageProps }) {
       + ' ' + channelScopes.join(' ') 
       + ' ' + moderatorsScopes.join(' ');
 
+    console.log('scopes', scopes);
     const initializeSession = async () => {
       if (hasLoggedOut) return;
 
