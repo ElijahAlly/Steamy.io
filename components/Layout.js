@@ -50,9 +50,9 @@ export default function Layout(props) {
       <div
         ref={dropdownRef}
         onClick={(e) => e.stopPropagation()}
-        className={`w-full bg-inherit py-6 px-3 border md:border-none border-slate-950 dark:border-white rounded-md 
-          ${isChannelListDropdownSelected 
-            ? 'absolute top-16 right-0 flex flex-col shadow-lg shadow-slate-800 pt-3' 
+        className={`w-5/6 md:w-full bg-white dark:bg-slate-950 md:bg-inherit py-6 border md:border-none border-slate-950 dark:border-white rounded-md 
+          ${isChannelListDropdownSelected
+            ? 'absolute top-16 right-3 flex flex-col shadow-lg shadow-slate-800 pt-3 px-3' 
             : 'hidden md:relative md:flex md:flex-col border-t'
           }
         `}
@@ -68,11 +68,6 @@ export default function Layout(props) {
               getUsersId={getUsersId}
             />
           )) }
-          { !props.channels.length && (
-            <li className='flex items-center justify-between text-sm mt-3 text-slate-950 dark:text-white'>
-              You have no channels, please add some channels to interact with
-            </li>
-          ) }
         </ul>
       </div>
     );
@@ -87,7 +82,10 @@ export default function Layout(props) {
           <div className="p-1 md:py-2 flex flex-row items-center md:items-start justify-between md:justify-start md:flex-col">
             <button
               className="hidden md:block min-w-fit h-fit select-none bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded w-2/5 md:w-full transition duration-150"
-              onClick={ () => signOut() }
+              onClick={(e) => {
+                e.preventDefault();
+                signOut();
+              }}
             >
               Logout
             </button>
@@ -122,6 +120,11 @@ export default function Layout(props) {
           {/* Big screen Channels list */}
           <h4 className="hidden md:block font-bold text-slate-950 dark:text-white">Your Channels</h4>
           <div className='hidden md:block'>
+            {!props.channels.length && (
+              <li className='flex items-center justify-between text-sm mt-3 text-slate-950 dark:text-white'>
+                You have no channels
+              </li>
+            )}
             {getChannelsList()}
           </div>
         </div>
