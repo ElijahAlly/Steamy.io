@@ -1,4 +1,4 @@
-import { sections } from "@/donotcommit";
+// import { sections } from "@/donotcommit";
 import { SectionType } from "@/types/section";
 import { FunctionComponent, useState } from "react";
 import Section from "./Section";
@@ -12,7 +12,7 @@ export interface SectionsDragObj {
 }
 
 const Sections: FunctionComponent<SectionsProps> = () => {
-    const [activeSections, setActiveSections] = useState(sections.active);
+    const [activeSections, setActiveSections] = useState([]);
     const [draggedSection, setDraggedSection] = useState<SectionsDragObj>({}); // { <rowIndex>: { <colIndex>: boolean, <colIndex: boolean }, <rowIndex>: { ... } }
     const [isDraggingOver, setIsDraggingOver] = useState<SectionsDragObj>({});
 
