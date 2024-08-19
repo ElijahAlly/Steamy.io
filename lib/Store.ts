@@ -1,23 +1,32 @@
-import { useState, useEffect } from 'react'
-import { createClient } from '@supabase/supabase-js'
+import { useState, useEffect, SetStateAction } from 'react'
+import { createClient, RealtimeChannel, SupabaseClient } from '@supabase/supabase-js'
+import { Channel } from '@/types/channel';
+import { UserFromSupabase } from '@/types/user';
+import { MessageType } from '@/types/message';
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+export const supabase: SupabaseClient = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
 )
+
+interface StoreProps {
+  channelId?: string | undefined;
+}
 
 /**
  * @param {number} channelId the currently selected Channel
  */
-export const useStore = (props) => {
-  const [channels, setChannels] = useState([])
-  const [messages, setMessages] = useState([])
-  const [users] = useState(new Map())
-  const [newMessage, handleNewMessage] = useState(null)
-  const [newChannel, handleNewChannel] = useState(null)
-  const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
-  const [deletedChannel, handleDeletedChannel] = useState(null)
-  const [deletedMessage, handleDeletedMessage] = useState(null)
+export const useStore = (props: StoreProps) => {
+  const [channels, setChannels] = useState<Channel[]>([])
+  const [messages, setMessages] = useState<MessageType[]>([])
+  const [users] = useState<Map<number, UserFromSupabase>>(new Map())
+  const [newMessage, handleNewMessage] = useState<MessageType | null>(null)
+  const [newChannel, handleNewChannel] = useState<Channel | null>(null)
+  const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState<UserFromSupabase | null>(null)
+  const [deletedChannel, handleDeletedChannel] = useState<Channel | null>(null)
+  const [deletedMessage, handleDeletedMessage] = useState<MessageType | null>(null)
+
+  const [channelRefs, setChannelRefs] = useState<RealtimeChannel[]>([]);
 
   // Load initial data and set up listeners
   useEffect(() => {
@@ -27,41 +36,46 @@ export const useStore = (props) => {
     const messageListener = supabase
       .channel('public:messages')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (payload) =>
-        handleNewMessage(payload.new)
+        handleNewMessage(payload.new as MessageType)
       )
       .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, (payload) =>
-        handleDeletedMessage(payload.old)
+        handleDeletedMessage(payload.old as MessageType)
       )
       .subscribe()
     // Listen for changes to our users
     const userListener = supabase
       .channel('public:users')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, (payload) =>
-        handleNewOrUpdatedUser(payload.new)
+        handleNewOrUpdatedUser(payload.new as UserFromSupabase)
       )
       .subscribe()
     // Listen for new and deleted channels
     const channelListener = supabase
       .channel('public:channels')
       .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'channels' }, (payload) =>
-        handleNewChannel(payload.new)
+        handleNewChannel(payload.new as Channel)
       )
       .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'channels' }, (payload) =>
-        handleDeletedChannel(payload.old)
+        handleDeletedChannel(payload.old as Channel)
       )
       .subscribe()
     // Cleanup on unmount
+
+    // Store channel references for cleanup
+    setChannelRefs([messageListener, userListener, channelListener]);
+
+    // Cleanup on unmount
     return () => {
-      supabase.removeChannel(supabase.channel(messageListener))
-      supabase.removeChannel(supabase.channel(userListener))
-      supabase.removeChannel(supabase.channel(channelListener))
-    }
-  }, [])
+      channelRefs.forEach((channel) => {
+        supabase.removeChannel(channel);
+      });
+    };
+  }, [channelRefs])
 
   // Update when the route changes
   useEffect(() => {
-    if (props?.channelId > 0) {
-      fetchMessages(props.channelId, (messages) => {
+    if (props.channelId && Number(props.channelId) > 0) {
+      fetchMessages(props.channelId, (messages: MessageType[]) => {
         messages.forEach((message) => users.set(message.user_id, message.author))
         setMessages(messages)
       })
@@ -74,7 +88,7 @@ export const useStore = (props) => {
     if (newMessage && newMessage.channel_id === Number(props.channelId)) {
       const handleAsync = async () => {
         let authorId = newMessage.user_id
-        if (!users.get(authorId)) await fetchUser(authorId, (user) => handleNewOrUpdatedUser(user))
+        if (!users.get(authorId)) await fetchUser(authorId, (user: UserFromSupabase) => handleNewOrUpdatedUser(user))
         setMessages(messages.concat(newMessage))
       }
       handleAsync()
@@ -116,9 +130,8 @@ export const useStore = (props) => {
 
 /**
  * Fetch all channels
- * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchChannels = async (setState) => {
+export const fetchChannels = async (setState: Function) => {
   try {
     let { data } = await supabase.from('channels').select('*')
     if (setState) setState(data)
@@ -130,12 +143,11 @@ export const fetchChannels = async (setState) => {
 
 /**
  * Fetch a single user
- * @param {number} userId
- * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchUser = async (userId, setState) => {
+export const fetchUser = async (userId: number, setState: Function) => {
   try {
     let { data } = await supabase.from('users').select(`*`).eq('id', userId)
+    if (!data) return;
     let user = data[0]
     if (setState) setState(user)
     return user
@@ -146,10 +158,8 @@ export const fetchUser = async (userId, setState) => {
 
 /**
  * Fetch all messages and their authors
- * @param {number} channelId
- * @param {function} setState Optionally pass in a hook or callback to set the state
  */
-export const fetchMessages = async (channelId, setState) => {
+export const fetchMessages = async (channelId: string, setState: Function) => {
   try {
     let { data } = await supabase
       .from('messages')
@@ -165,10 +175,8 @@ export const fetchMessages = async (channelId, setState) => {
 
 /**
  * Insert a new channel into the DB
- * @param {string} slug The channel name
- * @param {number} user_id The channel creator
  */
-export const addChannel = async (slug, user_id) => {
+export const addChannel = async (slug: string, user_id: number) => {
   try {
     let { data } = await supabase
       .from('channels')
@@ -182,11 +190,8 @@ export const addChannel = async (slug, user_id) => {
 
 /**
  * Insert a new message into the DB
- * @param {string} message The message text
- * @param {number} channel_id
- * @param {number} user_id The author
  */
-export const addMessage = async (message, channel_id, user_id) => {
+export const addMessage = async (message: string, channel_id: number, user_id: number) => {
   try {
     let { data } = await supabase
       .from('messages')
@@ -200,9 +205,8 @@ export const addMessage = async (message, channel_id, user_id) => {
 
 /**
  * Delete a channel from the DB
- * @param {number} channel_id
  */
-export const deleteChannel = async (channel_id) => {
+export const deleteChannel = async (channel_id: number) => {
   try {
     let { data } = await supabase.from('channels').delete().match({ id: channel_id })
     return data
@@ -213,9 +217,8 @@ export const deleteChannel = async (channel_id) => {
 
 /**
  * Delete a message from the DB
- * @param {number} message_id
  */
-export const deleteMessage = async (message_id) => {
+export const deleteMessage = async (message_id: number) => {
   try {
     let { data } = await supabase.from('messages').delete().match({ id: message_id })
     return data

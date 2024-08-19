@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
+import React from "react";
 import { useContext } from "react";
-import UserContext from "~/lib/UserContext";
+import UserContext from "@/lib/UserContext";
 
 export default function DonationSuccess() {
     const { getUsersEmail } = useContext(UserContext);

@@ -1,15 +1,21 @@
+import React from "react";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import { useState } from "react";
-import { formatDescription } from "~/util/text";
+import { ChannelFromTwitch } from "@/types/channel";
+import { UsersTwitchSession } from "@/types/user";
 
-const SearchChannelsInput = ({ user }) => {
+interface SearchChannelsInputProps {
+    user: UsersTwitchSession | null;
+}
+
+const SearchChannelsInput = ({ user }: SearchChannelsInputProps) => {
     const [addChannelText, setAddChannelText] = useState('');
-    const [channels, setChannels] = useState([]);
+    const [channels, setChannels] = useState<ChannelFromTwitch[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
-    const fetchChannels = async (query) => {
+    const fetchChannels = async (query: string) => {
         if (!query || !user?.provider_token) return;
         setIsLoading(true);
 
@@ -46,8 +52,8 @@ const SearchChannelsInput = ({ user }) => {
         }
     };
 
-    const handleInputChange = (e) => {
-        if (!e.target.value || e.target.value.split('').every(char => char === ' ')) {
+    const handleInputChange = (e: any) => {
+        if (!e.target.value || e.target.value.split('').every((char: string) => char === ' ')) {
             setAddChannelText('');
             setChannels([]);
         } else {
@@ -56,9 +62,9 @@ const SearchChannelsInput = ({ user }) => {
         }
     };
 
-    const handleAddChannel = (channel) => {
+    // const handleAddChannel = (channel) => {
         
-    }
+    // }
 
     return (
         <div className="relative flex flex-col my-0 md:my-1">
@@ -85,7 +91,7 @@ const SearchChannelsInput = ({ user }) => {
                             <li 
                                 key={channel?.id} 
                                 className="flex px-2 py-4 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
-                                onClick={() => handleAddChannel(channel)}
+                                // onClick={() => handleAddChannel(channel)}
                             >
                                 <Image
                                     className="rounded-full border border-slate-500 p-1 mr-2"

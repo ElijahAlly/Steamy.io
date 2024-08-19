@@ -1,25 +1,33 @@
+import React, { ReactNode, useContext, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useContext, useEffect, useRef, useState } from 'react'
-import UserContext from '~/lib/UserContext'
-import { addChannel, deleteChannel } from '~/lib/Store'
-import TrashIcon from '~/components/TrashIcon'
+import UserContext from '@/lib/UserContext'
+import { deleteChannel } from '@/lib/Store'
+import TrashIcon from './TrashIcon'
 import SearchChannelsInput from './SearchChannelsInput'
 import Image from 'next/image'
 import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons'
+import { Channel } from '@/types/channel'
+import { UsersTwitchSession } from '@/types/user'
 
-export default function Layout(props) {
+interface LayoutProps {
+  children: ReactNode;
+  channels: Channel[];
+  activeChannelId: string;
+}
+
+export default function Layout(props: LayoutProps) {
   const { signOut, user, getUsersProfilePicture, getUsersUsername, getUsersId, getProviderId } = useContext(UserContext);
   const [followedChannels, setFollowedChannels] = useState([]);
   const [isChannelListDropdownSelected, setIsChannelListDropdownSelected] = useState(false);
-  const dropdownRef = useRef(null);
-  const buttonRef = useRef(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLDivElement | null>(null);
 
-  const handleViewChannelsClick = (e) => {
+  const handleViewChannelsClick = (e: any) => {
     e.stopPropagation();
     setIsChannelListDropdownSelected(prev => !prev);
   };
 
-  const handleClickOutside = (e) => {
+  const handleClickOutside = (e: any) => {
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(e.target) &&
@@ -81,7 +89,7 @@ export default function Layout(props) {
             <SidebarItem
               channel={ channel }
               key={ channel.id }
-              isActiveChannel={ channel.id === props.activeChannelId }
+              isActiveChannel={ channel.id === Number(props.activeChannelId) }
               user={ user }
               getUsersId={getUsersId}
             />
@@ -92,9 +100,9 @@ export default function Layout(props) {
   }
 
   return (
-    <main className="relative flex flex-col md:flex-row h-full w-screen overflow-hidden pb-9 md:pb-0">
+    <main className="relative flex flex-col md:flex-row h-full w-screen overflow-hidden pb-9 md:pb-0 md:px-0">
       <nav
-        className={`w-screen md:w-64 h-fit md:h-full bg-white dark:bg-slate-950 text-gray-100 overflow-scroll border-r-0 md:border-b-0 md:border-r dark:border-r-white border-r-slate-950`}
+        className={`w-screen md:w-64 md:min-w-64 h-fit md:h-full bg-white dark:bg-slate-950 text-gray-100 border-r-0 md:border-b-0 md:border-r dark:border-r-white border-r-slate-950`}
       >
         <div className="p-2 md:p-3">
           <div className="p-1 md:py-2 flex flex-row items-center md:items-start justify-between md:justify-start md:flex-col">
@@ -147,12 +155,19 @@ export default function Layout(props) {
           </div>
         </div>
       </nav>
-      <div className="flex-1 bg-white dark:bg-slate-950 h-full">{props.children}</div>
+      <div className="flex-1 bg-white dark:bg-slate-950 h-full w-full">{props.children}</div>
     </main>
   )
 }
 
-const SidebarItem = ({ channel, isActiveChannel, user, getUsersId }) => (
+interface SidebarItemProps {
+  channel: Channel;
+  isActiveChannel: boolean;
+  user: UsersTwitchSession | null;
+  getUsersId: Function;
+}
+
+const SidebarItem = ({ channel, isActiveChannel, user, getUsersId }: SidebarItemProps) => (
   <>
     <li className="flex items-center justify-between">
       <Link href="/channels/[id]" as={`/channels/${channel.id}`}>

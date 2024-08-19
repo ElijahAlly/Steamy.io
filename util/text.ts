@@ -1,4 +1,4 @@
-export const formatDescription = (text, maxLength) => {
+export const formatDescription = (text: string, maxLength: number) => {
     if (text.length <= maxLength) {
         return text;
     }

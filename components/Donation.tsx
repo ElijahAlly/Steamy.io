@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
 import { useRouter } from 'next/router';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+import stripePromise from '@/lib/Stripe';
+import { Elements } from '@stripe/react-stripe-js';
 
 const DonationForm = () => {
   const [amount, setAmount] = useState('');
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     // Create a checkout session on the server
@@ -25,6 +23,7 @@ const DonationForm = () => {
 
     // Redirect to Stripe Checkout
     const stripe = await stripePromise;
+    if (!stripe) return;
     const { error } = await stripe.redirectToCheckout({
       sessionId: session.id,
     });

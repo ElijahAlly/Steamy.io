@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-export function useDarkMode() {
-    const [isDarkMode, setIsDarkMode] = useState(true);
+export function useDarkMode(): [boolean, React.Dispatch<React.SetStateAction<boolean>>] {
+    const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
 
     useEffect(() => {
         const htmlEle = document.getElementsByTagName('html')[0];
