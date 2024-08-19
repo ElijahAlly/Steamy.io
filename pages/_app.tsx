@@ -1,29 +1,47 @@
-import '~/styles/style.scss'
-import React, { useState, useEffect } from 'react'
+import '@/styles/tailwind.css'
+import React, { useState, useEffect, ElementType } from 'react'
 import { useRouter } from 'next/router'
-import UserContext from 'lib/UserContext'
-import { supabase } from 'lib/Store'
+import { supabase } from '@/lib/Store'
+import UserContext from '@/lib/UserContext'
 import { jwtDecode } from 'jwt-decode'
-import DefaultLayout from '~/components/DefaultLayout'
+import DefaultLayout from '@/components/DefaultLayout'
+import { UsersTwitchSession } from '@/types/user'
+import { Session } from '@supabase/supabase-js'
+// import { usersTwitchSession } from '@/donotcommit'
+// import { usePathname } from 'next/navigation'
 
-export default function SupabaseSession({ Component, pageProps }) {
+interface SectionsProviderProps {
+  Component: ElementType;
+  pageProps: any;
+}
+
+export default function App({ Component, pageProps }: SectionsProviderProps) {
+  // const pathname = usePathname();
   const [userLoaded, setUserLoaded] = useState(false)
-  const [user, setUser] = useState(null)
-  const [session, setSession] = useState(null);
+  const [user, setUser] = useState<UsersTwitchSession | null>(null)
+  const [session, setSession] = useState<Session | null>(null);
   const [hasLoggedOut, setHasLoggedOut] = useState(false);
   const router = useRouter()
 
+  // useEffect(() => {
+  //   if (!pathname || pathname.includes('channels')) return;
+  //   if (!userLoaded) {
+  //     setUser(usersTwitchSession); // Set a default user for development
+  //     setUserLoaded(true);
+  //     router.replace('/channels/1');
+  //   }
+  // }, [pathname, router, userLoaded])
+
   useEffect(() => {
     function saveSession(
-      // /** @type {Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']} */
-      session
+      session: Awaited<ReturnType<typeof supabase.auth.getSession>>['data']['session']
     ) {
       if (hasLoggedOut) return;
       setSession(session);
       console.log('session', session)
-      const currentUser = session;
+      const currentUser: any = session;
       if (session) {
-        const jwt = jwtDecode(session.access_token)
+        const jwt: any = jwtDecode(session.access_token)
         console.log('jwt', jwt);
         currentUser.appRole = jwt.user_role
         setUser(currentUser);
@@ -88,7 +106,7 @@ export default function SupabaseSession({ Component, pageProps }) {
 
     initializeSession();
 
-    const { subscription: authListener } = supabase.auth.onAuthStateChange(
+    const { data: { subscription: authListener} } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'SIGNED_OUT') {
           setUser(null);

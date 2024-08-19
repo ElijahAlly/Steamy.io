@@ -1,4 +1,4 @@
-module.exports = {
+const nextConfig  = {
     images: {
         remotePatterns: [
             {
@@ -7,6 +7,8 @@ module.exports = {
                 port: '',
                 pathname: '*/**',
             },
-        ]
+        ],
     },
-}
+};
+
+export default nextConfig;

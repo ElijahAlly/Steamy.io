@@ -1,16 +1,20 @@
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-const MessageInput = ({ onSubmit }) => {
+interface MessageInputProps {
+  onSubmit: (message: string) => null;
+}
+
+const MessageInput = ({ onSubmit }: MessageInputProps) => {
   const [messageText, setMessageText] = useState('')
   const [isValidMessage, setIsValidMessage] = useState(false);
-  const textareaRef = useRef(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleInputChange = (e) => {
-    const lines = e.target.value.split('\n').length;
+  const handleInputChange = (e: any) => {
+    const lines = e?.target?.value.split('\n').length;
 
-    if (lines <= 3 || e.nativeEvent.inputType === "deleteContentBackward") {
-      setMessageText(e.target.value);
+    if (lines <= 3 || e?.nativeEvent?.inputType === "deleteContentBackward") {
+      setMessageText(e?.target?.value || '');
     }
   };
 
@@ -20,7 +24,8 @@ const MessageInput = ({ onSubmit }) => {
     );
   }
 
-  const submitOnEnter = (event) => {
+  const submitOnEnter = (event: any) => {
+    if (!event) return;
     // Check for Shift + Enter to add a new line
     if (event.key === 'Enter' && event.shiftKey) {
       return; // Allow the default behavior for Shift + Enter (new line)
