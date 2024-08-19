@@ -185,9 +185,7 @@ export default function App({ Component, pageProps }: SectionsProviderProps) {
         getUsersProfilePicture,
       }}
     >
-      <DefaultLayout>
-        <Component {...pageProps} />
-      </DefaultLayout>
+      <Component {...pageProps} />
     </UserContext.Provider>
   )
 }
