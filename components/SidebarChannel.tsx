@@ -3,7 +3,6 @@ import { ChannelFromSupabase, ChannelInformationFromTwitch } from "@/types/chann
 import { UserTypeForSteamy } from "@/types/user";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 import TrashIcon from "./TrashIcon";
 
 interface SidebarChannelProps {
@@ -18,21 +17,20 @@ interface SidebarChannelProps {
 const SidebarChannel = ({ steamyChannel, channel, channels, isActiveChannel, user, getUsersId }: SidebarChannelProps) => {
     if (!channel && !steamyChannel) return <></>;
     // console.log('SidebarItem', channel)
-    const [isHovering, setIsHovering] = useState(false);
 
     const handleChannelDelete = async () => {
-    try {
-        user?.supabase?.id && await removeChannelFromUserSupabase(user, channel?.broadcaster_login || '')
-        if (isActiveChannel) { 
-            if (channels[0]?.broadcaster_login) {
-                window.location.href = '/channels/' + channels[0].broadcaster_login; 
-            } else if (steamyChannel) { // should always be a steamy channel, it should not be deleted (it is where the updates and new releases are located)
-                window.location.href = '/channels/' + steamyChannel.broadcaster_login; 
+        try {
+            user?.supabase?.id && await removeChannelFromUserSupabase(user, channel?.broadcaster_login || '')
+            if (isActiveChannel) { 
+                if (channels[0]?.broadcaster_login) {
+                    window.location.href = '/channels/' + channels[0].broadcaster_login; 
+                } else if (steamyChannel) { // should always be a steamy channel, it should not be deleted (it is where the updates and new releases are located)
+                    window.location.href = '/channels/' + steamyChannel.broadcaster_login; 
+                }
             }
+        } catch (err) {
+            console.error(err);
         }
-    } catch (err) {
-        console.error(err);
-    }
     }
 
     return (
@@ -40,8 +38,6 @@ const SidebarChannel = ({ steamyChannel, channel, channels, isActiveChannel, use
             href="/channels/[broadcasterLogin]" 
             as={`/channels/${channel?.broadcaster_login || steamyChannel?.broadcaster_login}`} 
             passHref
-            onMouseOver={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
         >
             <li className="flex justify-between items-center rounded-md border border-transparent hover:border-cyan-500 p-2 mb-2">
                 <div className='flex items-center'>
@@ -59,7 +55,7 @@ const SidebarChannel = ({ steamyChannel, channel, channels, isActiveChannel, use
                         {channel?.broadcaster_login || steamyChannel?.broadcaster_login}
                     </p>
                 </div>
-                {isHovering && !steamyChannel && (
+                {!steamyChannel && (
                     <button
                         className='hover:text-red-500'
                         onClick={handleChannelDelete}
