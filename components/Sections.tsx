@@ -149,7 +149,7 @@ const Sections: FunctionComponent<SectionsProps> = ({ channelSections, channelsL
                                         draggedSection={draggedSection}
                                         handleSetIsDragging={handleSetIsDragging}
                                         setShowShadow={setShowShadow}
-                                        shiwShadow={showShadow}
+                                        showShadow={showShadow}
                                     />
                                 ))}
                             </div>
