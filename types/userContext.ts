@@ -1,8 +1,8 @@
-import { UsersTwitchSession } from "./user";
+import { UserTypeForSteamy } from "./user";
 
 export interface UserContextType {
     userLoaded: boolean;
-    user: UsersTwitchSession | null;
+    user: UserTypeForSteamy | null;
     signOut: () => void;
     getUsersId: () => string;
     getProviderId: () => string;
