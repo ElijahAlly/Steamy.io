@@ -98,7 +98,7 @@ export default function Layout(props: LayoutProps) {
 
   const getChannels = () => {
     return (
-      <ul className={`${isChannelListDropdownSelected ? 'flex flex-col bg-slate-950 border border-white rounded-md max-h-72 overflow-y-auto' : 'hidden md:flex md:flex-col'}`}>
+      <ul className={`${isChannelListDropdownSelected ? 'flex flex-col bg-slate-950 border border-white rounded-md max-h-72 overflow-y-auto p-2' : 'hidden md:flex md:flex-col'}`}>
         {props.steamyChannel && (
           <SidebarChannel
             channel={null}
@@ -121,8 +121,8 @@ export default function Layout(props: LayoutProps) {
           />
         )) }
         {!channels.length && (
-          <li className='flex items-center justify-between text-sm mt-3 text-slate-950 dark:text-white'>
-            You have no channels
+          <li className='flex items-center justify-between text-sm m-3 text-slate-950 dark:text-white'>
+            Add channels
           </li>
         )}
       </ul>
@@ -167,7 +167,7 @@ export default function Layout(props: LayoutProps) {
                 ref={ buttonRef }
               >
                 <div className='max-h-16 w-fit flex items-center'>
-                  <p className='h-full mr-3 flex items-center justify-center text-md text-slate-950 dark:text-white bg-slate-950'>
+                  <p className='select-none h-full mr-3 flex items-center justify-center text-md text-slate-950 dark:text-white bg-slate-950'>
                     Your Channels
                   </p>
                   <ArrowDownIcon className={ `${isChannelListDropdownSelected ? 'hidden' : 'block'} text-slate-950 dark:text-white` } />
@@ -183,7 +183,7 @@ export default function Layout(props: LayoutProps) {
           <hr className="mt-2 md:mb-2 w-full border-slate-950 dark:border-white" />
 
           {/* Big screen Channels list */}
-          <h4 className="hidden mt-6 md:block font-bold text-slate-950 dark:text-white">Your Channels</h4>
+          <h4 className="hidden mt-6 md:block font-bold text-slate-950 dark:text-white select-none">Your Channels</h4>
           <div className='h-fit hidden md:block'>
             {getChannelsSearch()}
             {getChannels()}

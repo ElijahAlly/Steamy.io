@@ -10,7 +10,7 @@ interface SectionsProps {
     isOnSteamyChannel: boolean;
 }
 
-export interface SectionsDragObj { 
+export interface SectionsDragObj {
     [key: number]: {
         [key: number]: boolean
     }
@@ -25,7 +25,7 @@ const Sections: FunctionComponent<SectionsProps> = ({ channelSections, channelsL
     const [shouldLogout, setShouldLogout] = useState<boolean>(false);
     const { signOut } = useContext(UserContext);
 
-    shouldSetLogoutTimer && setTimeout(() => setShouldLogout(true), 900);
+    shouldSetLogoutTimer && setTimeout(() => setShouldLogout(true), 2100);
     shouldLogout && signOut();
 
     const handleDragStart = (rowIndex: number, colIndex: number) => {
