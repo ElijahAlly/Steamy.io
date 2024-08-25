@@ -21,15 +21,13 @@ export interface Permissions {
 }
 
 export interface SectionType {
+    id?: string;
+    broadcaster_login: string;
     title: string;
     collapsed: boolean;
     type: SECTION_TYPE_ENUM;
     tabs: Tab[];
-    read?: Permissions;
-    write?: Permissions;
-}
-
-export interface Sections {
-    active: SectionType[][];
-    hidden: SectionType[][];
+    read_permissions?: Permissions;
+    write_permissions?: Permissions;
+    active: boolean;
 }

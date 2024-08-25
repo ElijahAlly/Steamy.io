@@ -1,4 +1,4 @@
-export interface ChannelFromTwitch {
+export interface ChannelSearchFromTwitch {
     broadcaster_language: string;
     broadcaster_login: string;
     display_name: string;
@@ -10,12 +10,26 @@ export interface ChannelFromTwitch {
     tags: string[];
     thumbnail_url: string;
     title: string;
-    started_at: string; // Assuming this is a timestamp, it can be a string. If it's nullable, use `string | null`.
+    started_at: string;
 }
 
-export interface Channel {
+export interface ChannelInformationFromTwitch {
+    broadcaster_id: string;
+    broadcaster_login: string;
+    broadcaster_name: string;
+    broadcaster_language: string;
+    game_id: string;
+    game_name: string;
+    title: string;
+    delay: number;
+    tags: string[];
+    content_classification_labels: string[];
+    is_branded_content: boolean;
+}
+
+export interface ChannelFromSupabase {
     id: number;
-    slug: string;
-    created_by: number
-    // Add other channel fields as needed
+    broadcaster_login: string;
+    thumbnail_url: string;
+    channel_id: string;
 }

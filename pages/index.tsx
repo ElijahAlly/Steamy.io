@@ -1,4 +1,3 @@
-import { supabase } from '@/lib/Store'
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import Image from 'next/image';
@@ -7,6 +6,7 @@ import { useContext } from 'react';
 import UserContext from '@/lib/UserContext';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { supabase } from '@/lib/supabase';
 
 const Home = () => {
   const router = useRouter();
@@ -22,7 +22,7 @@ const Home = () => {
     });
     
     if (userLoaded && user) {
-      router.push('/channels/1');
+      router.push('/channels/steamy');
     }
   }, [user, userLoaded, router]);
 
