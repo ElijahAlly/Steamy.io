@@ -28,8 +28,8 @@ const DefaultLayout = ({ children }: DefaultLayout) => {
                     onClick={() => router.push('/channels/steamy')}
                     priority
                 />
-                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUsersEmail()} className='select-none bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>donate any amount :)</a>
-                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + getUsersEmail()} className='select-none bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>donate :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + '?prefilled_email=' + getUsersEmail()} className='select-none bg-cyan-500 text-white rounded-md p-2 hidden md:block' target='_blank'>donate any amount :)</a>
+                <a href={'https://donate.stripe.com/' + process.env.NEXT_PUBLIC_STRIPE_DONATION_URL + '?prefilled_email=' + getUsersEmail()} className='select-none bg-cyan-500 text-white rounded-md p-2 block md:hidden' target='_blank'>donate :)</a>
                 {/* // TODO: add theme toggler */}
                 {/* <ThemeToggler /> */}
             </nav>

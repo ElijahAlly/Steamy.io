@@ -21,12 +21,20 @@ const Sections: FunctionComponent<SectionsProps> = ({ channelSections, channelsL
     const [draggedSection, setDraggedSection] = useState<SectionsDragObj>({}); // { <rowIndex>: { <colIndex>: boolean, <colIndex: boolean }, <rowIndex>: { ... } }
     const [isDraggingOver, setIsDraggingOver] = useState<SectionsDragObj>({});
     const [showShadow, setShowShadow] = useState<boolean>(false);
-    const [shouldSetLogoutTimer, setShouldLogoutTimer] = useState<boolean>(channelsLengthIsZero && !isOnSteamyChannel);
+    const [shouldSetLogoutTimer, setShouldSetLogoutTimer] = useState<boolean>(channelsLengthIsZero && !isOnSteamyChannel);
     const [shouldLogout, setShouldLogout] = useState<boolean>(false);
     const { signOut } = useContext(UserContext);
 
     shouldSetLogoutTimer && setTimeout(() => setShouldLogout(true), 2100);
-    shouldLogout && signOut();
+
+    useEffect(() => {
+        if (shouldLogout && channelsLengthIsZero && !isOnSteamyChannel) {
+            signOut();
+        } else {
+            setShouldSetLogoutTimer(false);
+            setShouldLogout(false);
+        }
+    }, [shouldLogout]);
 
     const handleDragStart = (rowIndex: number, colIndex: number) => {
         // console.log('is Dragging', { ...draggedSection, [rowIndex]: { [colIndex]: true}})
@@ -127,7 +135,7 @@ const Sections: FunctionComponent<SectionsProps> = ({ channelSections, channelsL
                 </div>
             ) : (
                 <>
-                    <div className='flex m-3 w-full overflow-x-auto'>
+                    <div className='flex m-3 w-full overflow-x-auto select-none'>
                         {/* // TODO: Add actions: collapse/expand all, ... */}
                         <p className='mx-2 md:mx-3'>(actions_here)</p>
                     </div>

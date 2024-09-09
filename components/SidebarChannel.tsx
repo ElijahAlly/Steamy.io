@@ -4,6 +4,7 @@ import { UserTypeForSteamy } from "@/types/user";
 import Image from "next/image";
 import Link from "next/link";
 import TrashIcon from "./TrashIcon";
+import { formatDescription } from "@/util/text";
 
 interface SidebarChannelProps {
   channels: (ChannelFromSupabase | ChannelInformationFromTwitch)[];
@@ -34,37 +35,41 @@ const SidebarChannel = ({ steamyChannel, channel, channels, isActiveChannel, use
     }
 
     return (
-        <Link
-            href="/channels/[broadcasterLogin]" 
-            as={`/channels/${channel?.broadcaster_login || steamyChannel?.broadcaster_login}`} 
-            passHref
-        >
-            <li className="flex justify-between items-center rounded-md border border-transparent hover:border-cyan-500 p-2 mb-2">
-                <div className='flex items-center'>
-                    <Image
-                        className="rounded-full border mr-2"
-                        src={channel?.thumbnail_url || steamyChannel?.thumbnail_url || ''}
-                        width="36"
-                        height="36"
-                        alt={(channel?.broadcaster_login || steamyChannel?.broadcaster_login) + ' profile picture'}
-                        priority
-                    />
-                    <p
-                        className={`text-slate-950 dark:text-white ${isActiveChannel ? 'font-bold dark:text-cyan-500' : ''}`}
-                    >
-                        {channel?.broadcaster_login || steamyChannel?.broadcaster_login}
-                    </p>
-                </div>
-                {!steamyChannel && (
-                    <button
-                        className='hover:text-red-500'
-                        onClick={handleChannelDelete}
-                    >
-                        <TrashIcon />
-                    </button>
-                )}
-            </li>
-        </Link>
+        <>
+            {!steamyChannel && <hr className='my-2 opacity-30' />}
+            <Link
+                href="/channels/[broadcasterLogin]" 
+                as={`/channels/${channel?.broadcaster_login || steamyChannel?.broadcaster_login}`} 
+                passHref
+                className='hover:border-cyan-500 border border-transparent rounded-md select-none'
+            >
+                <li className="flex justify-between items-center p-2">
+                    <div className='flex items-center'>
+                        <Image
+                            className="rounded-full border mr-2"
+                            src={channel?.thumbnail_url || steamyChannel?.thumbnail_url || ''}
+                            width="36"
+                            height="36"
+                            alt={(channel?.broadcaster_login || steamyChannel?.broadcaster_login) + ' profile picture'}
+                            priority
+                        />
+                        <p
+                            className={`text-slate-950 dark:text-white ${isActiveChannel ? 'font-semibold dark:text-cyan-500' : ''}`}
+                        >
+                            {formatDescription(channel?.broadcaster_login || steamyChannel?.broadcaster_login || '', 15)}
+                        </p>
+                    </div>
+                    {isActiveChannel && !steamyChannel && (
+                        <button
+                            className='hover:text-red-500'
+                            onClick={handleChannelDelete}
+                        >
+                            <TrashIcon />
+                        </button>
+                    )}
+                </li>
+            </Link>
+        </>
     )
 }
 

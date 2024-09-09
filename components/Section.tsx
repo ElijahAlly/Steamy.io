@@ -107,7 +107,7 @@ const Section: FunctionComponent<SectionProps> = ({
     // console.log(showShadow)
     return (
         <div
-            className={`relative overflow-y-hidden max-h-fit ${isCollapsed ? 'w-full md:w-fit' : 'w-full max-w-1/2'} my-2 md:my-0 md:mx-2 border border-white rounded-md ${isDragging || isDraggingOver ? 'opacity-35' : 'opacity-100'} ${isDraggingOver ? 'border-cyan-500' : 'border-white'}`}
+            className={`relative select-none overflow-y-hidden max-h-fit ${isCollapsed ? 'w-full md:w-fit' : 'w-full max-w-1/2'} my-2 md:my-0 md:mx-2 border border-white rounded-md ${isDragging || isDraggingOver ? 'opacity-35' : 'opacity-100'} ${isDraggingOver ? 'border-cyan-500' : 'border-white'}`}
             onDragOver={onDragOver}
             onDrop={onDrop}
             onDragLeave={onDragLeave}
